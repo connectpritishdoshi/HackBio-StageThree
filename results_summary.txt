@@ -1,0 +1,54 @@
+============================================================
+              BRAIN TUMOUR SEGMENTATION — RESULTS SUMMARY
+============================================================
+  Dataset            : BraTS2020 (FLAIR channel, binary mask)
+  Model              : U-Net
+
+  Training           : Skipped (model loaded from Drive)
+------------------------------------------------------------
+  Validation Dice Score : 0.8020
+  Validation IoU Score  : 0.7697
+============================================================
+
+  PREDICTION VISUALISATION — HOW TO READ THE OUTPUT
+============================================================
+  Each row in prediction_visualisation.png shows 3 columns:
+    Column 1 — Original FLAIR MRI slice (grayscale input to model)
+    Column 2 — Ground Truth mask (white = tumour, annotated by expert)
+    Column 3 — Predicted mask overlaid on MRI (yellow = tumour detected)
+
+  INTERPRETATION OF THE 5 SAMPLE SLICES:
+  ─────────────────────────────────────────────────────────
+  Row 1 | No tumour in ground truth → no overlay predicted.
+         Correct true negative. Model correctly suppresses
+         prediction on non-tumour slices.
+
+  Row 2 | Small tumour present in ground truth → no overlay
+         predicted. False negative — model missed a small
+         tumour. Small or low-contrast tumours are the main
+         failure mode for standard U-Net at this scale.
+
+  Row 3 | Small tumour in ground truth → yellow overlay
+         predicted in the correct anatomical location.
+         True positive — the model successfully localised
+         the tumour region.
+
+  Row 4 | Near-empty slice (outer volume), no tumour →
+         no overlay predicted. Correct true negative.
+
+  Row 5 | Small outer brain slice, no tumour → no overlay
+         predicted. Correct true negative.
+
+  OUTCOME ASSESSMENT:
+  ─────────────────────────────────────────────────────────
+  Dice Score 0.8020 and IoU 0.7697 are consistent with
+  the visual results. The model performs well at:
+    - Suppressing false positives on non-tumour slices
+    - Correctly localising tumours when detected (Row 3)
+  The primary weakness is missing small or subtle tumours
+  (Row 2 — false negatives), which is the known limitation
+  of a standard single-channel U-Net on BraTS2020.
+  Overall: solid baseline result for a U-Net trained on
+  FLAIR only. Multi-channel input (T1, T1ce, T2, FLAIR)
+  would likely push Dice above 0.85.
+============================================================

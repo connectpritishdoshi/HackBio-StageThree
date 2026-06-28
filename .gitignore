@@ -13,8 +13,6 @@ env/
 
 # Output files
 *.zip
-*.png
-*.txt
 
 # IDE
 .vscode/
